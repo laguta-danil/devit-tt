@@ -32,8 +32,6 @@ export default function AddOrEditPost() {
     enableReinitialize: true,
     initialValues,
     onSubmit: values => {
-      console.log(data?.id);
-
       if (data?.id) {
         putEditPost({ ...values, id: Number(id) });
       } else {

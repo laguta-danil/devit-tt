@@ -28,20 +28,33 @@ export default function Posts() {
         <Stack direction="row" justifyContent="space-between" spacing={4} alignItems="center">
           <TextField label="Search" name={'search'} onChange={e => setSearch(e.target.value)} />
           <h1>Posts</h1>
-          <Button
-            color="warning"
-            variant="outlined"
-            onClick={() => {
-              auth.signout(() => navigate('/login'));
-            }}
-          >
-            Sign out
-          </Button>
+          {auth?.user ? (
+            <Button
+              color="warning"
+              variant="outlined"
+              onClick={() => {
+                auth.signout(() => navigate('/login'));
+              }}
+            >
+              Sign out
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                auth.signout(() => navigate('/login'));
+              }}
+            >
+              Sign in
+            </Button>
+          )}
         </Stack>
         <Stack direction="row" justifyContent="space-between" spacing={2} py={4}>
-          <Button onClick={() => onNewClick()} variant="outlined">
-            Add new post
-          </Button>
+          {auth?.user ? (
+            <Button onClick={() => onNewClick()} variant="outlined">
+              Add new post
+            </Button>
+          ) : null}
           <Typography>
             {' '}
             Sort by date <Switch onClick={handleDateSort} />{' '}
@@ -53,7 +66,7 @@ export default function Posts() {
         {data?.data.map((post: any) => {
           return (
             <Grid item xs={8} sm={6} lg={4}>
-              <PostCard post={post} />
+              <PostCard post={post} key={post.id} />
             </Grid>
           );
         })}

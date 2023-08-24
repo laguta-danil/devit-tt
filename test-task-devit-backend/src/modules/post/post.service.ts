@@ -11,8 +11,6 @@ const parser = new Parser();
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  private changeScheduleTimer(time) {}
-
   @Interval(120000)
   async getRssFeed() {
     const feed = await parser.parseURL(process.env.FEED_URL);

@@ -12,8 +12,6 @@ export default function Login() {
 
   const from = location.state?.from?.pathname || '/';
 
-  console.log(location?.state);
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
