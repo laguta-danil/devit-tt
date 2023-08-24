@@ -14,10 +14,10 @@ import { Response } from 'express';
 
 import JwtAuthGuard from '../../interceptors/guards/jwt-auth.guard';
 import { RequestWithUserData } from '../../types/Request.with.user';
-import { ApiDeleteUser, ApiUpdateUserProfile } from '../auth/auth.swagger';
 
 import { DeleteUserCommand } from './use-case/delete.user.use-case';
 import { GetUserCommand } from './use-case/get.user.profile.use-case';
+import { ApiDeleteUser, ApiGetUserData } from './user.swagger';
 
 @ApiTags('User')
 @UseGuards(JwtAuthGuard)
@@ -27,7 +27,7 @@ export class UserController {
 
   @Get()
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiUpdateUserProfile()
+  @ApiGetUserData()
   async getUser(@Req() req: RequestWithUserData, @Res() res: Response) {
     res
       .status(200)

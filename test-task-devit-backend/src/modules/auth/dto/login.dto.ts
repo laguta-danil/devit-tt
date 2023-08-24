@@ -1,4 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
+
+import { Trim } from '../../../helpers/decorators/validation/trim';
 
 export class LoginDto {
   @ApiProperty({
@@ -10,12 +13,16 @@ export class LoginDto {
     pattern: '[a-zA-Z0-9_-]*$',
     uniqueItems: true
   })
-  readonly login: string;
+  @Trim()
+  @IsString()
+  readonly username: string;
 
   @ApiProperty({
     description: 'User password',
     example: 'qwerty123',
     minLength: 6
   })
+  @Trim()
+  @IsString()
   readonly password: string;
 }

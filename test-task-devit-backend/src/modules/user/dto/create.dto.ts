@@ -36,11 +36,3 @@ export class CreateUserDto extends UserDto {
   @Validate(ExistUserByLoginOrEmail)
   readonly username: string;
 }
-
-export class CreateUserServiceDto extends CreateUserDto {}
-
-export class CreateUserDbDto {
-  readonly email: string;
-  readonly username: string;
-  readonly password: string;
-}
