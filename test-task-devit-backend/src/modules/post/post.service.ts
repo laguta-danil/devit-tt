@@ -1,26 +1,65 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { Interval } from '@nestjs/schedule';
+import { convert } from 'html-to-text';
+import * as Parser from 'rss-parser';
+
+import { PrismaService } from '../../database/prisma.service';
+
+const parser = new Parser();
 
 @Injectable()
 export class PostService {
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
-  }
+  constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all post`;
-  }
+  private changeScheduleTimer(time) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
-  }
+  @Interval(120000)
+  async getRssFeed() {
+    const feed = await parser.parseURL(process.env.FEED_URL);
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
-  }
+    try {
+      feed.items.map(async post => {
+        const imgUrl = convert(post.content, {
+          selectors: [
+            { format: 'skip', selector: 'a' },
+            { format: 'skip', selector: 'p' }
+          ],
+          wordwrap: 130
+        }).slice(1, -1);
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+        const description = convert(post.content, {
+          selectors: [
+            { format: 'skip', selector: 'a' },
+            { format: 'skip', selector: 'img' }
+          ],
+          wordwrap: 130
+        });
+        await this.prisma.post.upsert({
+          create: {
+            author: post.creator,
+            authorId: post.guid,
+            categories: [...post.categories],
+            description: description,
+            imageUrl: imgUrl,
+            link: post.link,
+            pubDate: post.isoDate,
+            title: post.title
+          },
+          update: {
+            author: post.creator,
+            authorId: post.guid,
+            categories: [...post.categories],
+            description: description,
+            imageUrl: imgUrl,
+            link: post.link,
+            pubDate: post.isoDate,
+            title: post.title
+          },
+          where: { link: post.link, title: post.title }
+        });
+      });
+    } catch (error) {
+      return 'rss parsing close with error';
+    }
   }
 }

@@ -22,11 +22,12 @@ model User {
 
 model Post {
   id             Int         @id @default(autoincrement())
+  author         String?
   title          String
   description    String
   link           String      @unique
-  pubDate        DateTime
-  authorId       Int
+  pubDate        DateTime?
+  authorId       String?
   categories     String[]
   imageUrl       String
 

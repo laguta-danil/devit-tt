@@ -22,6 +22,7 @@ export default function Login() {
 
     auth.signin(username, password, () => {
       navigate(from, { replace: true });
+      navigate(0);
     });
   }
 

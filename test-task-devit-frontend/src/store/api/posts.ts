@@ -19,17 +19,17 @@ export const postsApi = api.injectEndpoints({
   endpoints: builder => ({
     getPosts: builder.query<Posts, any>({
       query: ({ page, itemsPerPage, order, search }) =>
-        `posts/getAll?page=${page}&itemsPerPage=${itemsPerPage}&order=${order}&search=${search}`,
+        `post/get-all?page=${page}&itemsPerPage=${itemsPerPage}&order=${order}&search=${search}`,
       providesTags: ['Post']
     }),
     getPost: builder.query<Post, number>({
-      query: id => `posts/one-post?id=${id}`,
+      query: id => `post/${id}`,
       providesTags: ['Post']
     }),
     addPost: builder.mutation<Post, Partial<Post>>({
       query(body) {
         return {
-          url: `posts/add`,
+          url: `post`,
           method: 'POST',
           body
         };
@@ -39,8 +39,8 @@ export const postsApi = api.injectEndpoints({
     updatePost: builder.mutation<Post, Partial<Post>>({
       query(data) {
         return {
-          url: `posts/update?id${data.id}`,
-          method: 'PUT',
+          url: `post/${data.id}`,
+          method: 'PATCH',
           body: data
         };
       },
@@ -48,7 +48,7 @@ export const postsApi = api.injectEndpoints({
     }),
     deletePost: builder.mutation<Post, any>({
       query: id => ({
-        url: `posts/delete?id=${id}`,
+        url: `post/${id}`,
         method: 'DELETE'
       }),
       invalidatesTags: ['Post']

@@ -28,6 +28,7 @@ import { AuthService } from './auth.service';
     PrismaService,
     JwtService,
     AuthService,
+    // repositories
     UsersRepo,
     // validation
     ExistUserByLoginOrEmail,

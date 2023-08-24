@@ -77,9 +77,10 @@ export function RequireAuth({ children }: { children: JSX.Element }) {
 export function RequireNotAuthed({ children }: { children: JSX.Element }) {
   const auth = useAuth();
   const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   if (auth.user) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to={from} state={{ from: location }} replace />;
   }
 
   return children;
