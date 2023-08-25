@@ -8,23 +8,31 @@ services:
       - POSTGRES_PASSWORD=123123
       - POSTGRES_USER=postgres
       - POSTGRES_DB=devit
+      - POSTGRES_PORT=5432
     container_name: postgres
+    env_file:
+      - .env
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
-      - '5002:5432'
+      - '6500:5432'
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: nest-docker-postgres
+    env_file:
+      - .env
     environment:
       - PORT=${PORT}
+      - DATABASE_URL=${DATABASE_URL}
     ports:
-      - '5001:5000'
+      - '5000:5000'
     depends_on:
       - db
     volumes:
       - ./src:/app/src
 
+volumes:
+  postgres_data:
