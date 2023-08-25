@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Interval } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { convert } from 'html-to-text';
 import * as Parser from 'rss-parser';
 
@@ -11,7 +11,7 @@ const parser = new Parser();
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  @Interval(120000)
+  @Cron('* */10 * * * *')
   async getRssFeed() {
     const feed = await parser.parseURL(process.env.FEED_URL);
 
@@ -53,7 +53,7 @@ export class PostService {
             pubDate: post.isoDate,
             title: post.title
           },
-          where: { link: post.link, title: post.title }
+          where: { link: post.link }
         });
       });
     } catch (error) {

@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePressEcs } from '../../hooks/usePressEsc';
+import { CreateEditPostShema } from '../../shema/createEditPostShema';
 import { useAddPostMutation, useGetPostQuery, useUpdatePostMutation } from '../../store/api/posts';
 
 export default function AddOrEditPost() {
@@ -31,6 +32,7 @@ export default function AddOrEditPost() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues,
+    validationSchema: CreateEditPostShema,
     onSubmit: values => {
       if (data?.id) {
         putEditPost({ ...values, id: Number(id) });
@@ -53,6 +55,8 @@ export default function AddOrEditPost() {
             variant="outlined"
             size="small"
             fullWidth
+            error={formik.touched.title && Boolean(formik.errors.title)}
+            helperText={formik.touched.title && (formik.errors.title as string)}
             {...formik.getFieldProps('title')}
             required
           />
@@ -64,6 +68,8 @@ export default function AddOrEditPost() {
             multiline
             size="small"
             fullWidth
+            error={formik.touched.description && Boolean(formik.errors.description)}
+            helperText={formik.touched.description && (formik.errors.description as string)}
             {...formik.getFieldProps('description')}
             required
           />
@@ -75,6 +81,8 @@ export default function AddOrEditPost() {
             rows={2}
             multiline
             fullWidth
+            error={formik.touched.link && Boolean(formik.errors.link)}
+            helperText={formik.touched.link && (formik.errors.link as string)}
             {...formik.getFieldProps('link')}
             required
           />
@@ -86,6 +94,8 @@ export default function AddOrEditPost() {
             multiline
             size="small"
             fullWidth
+            error={formik.touched.imageUrl && Boolean(formik.errors.imageUrl)}
+            helperText={formik.touched.imageUrl && (formik.errors.imageUrl as string)}
             {...formik.getFieldProps('imageUrl')}
             required
           />

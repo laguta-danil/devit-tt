@@ -12,7 +12,10 @@ import { LoginDto } from './dto/login.dto';
 
 export function ApiAuthorization() {
   return applyDecorators(
-    ApiOperation({ summary: 'Authorization' }),
+    ApiOperation({
+      summary:
+        'Authorization (if your users table in database empty, user with username&password "admin" will be create automatically)'
+    }),
     ApiBody({ type: LoginDto }),
     ApiBadRequestResponse(apiBadRequestResponse),
     ApiResponse({

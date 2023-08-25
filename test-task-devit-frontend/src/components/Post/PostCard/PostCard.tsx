@@ -1,9 +1,9 @@
 import { Button, Card, CardContent, CardHeader, CardMedia, Stack, Typography } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePressEcs } from '../../hooks/usePressEsc';
-import { useAuth } from '../../services/auth';
-import { useDeletePostMutation } from '../../store/api/posts';
+import { usePressEcs } from '../../../hooks/usePressEsc';
+import { useAuth } from '../../../services/auth';
+import { useDeletePostMutation } from '../../../store/api/posts';
 
 export default function PostCard(props: any) {
   const navigate = useNavigate();
@@ -46,11 +46,9 @@ export default function PostCard(props: any) {
         {auth?.user ? (
           <Stack direction="row" spacing={2}>
             <Button variant="outlined" onClick={onEditClick}>
-              {' '}
               Edit
             </Button>
             <Button variant="outlined" color="error" onClick={onDeleteClick}>
-              {' '}
               Delete
             </Button>
           </Stack>

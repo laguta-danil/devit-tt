@@ -1,8 +1,10 @@
 import { Alert, Box, Button, Snackbar, Stack, TextField } from '@mui/material';
+import { useFormik } from 'formik';
 import * as React from 'react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../services/auth';
+import { SignipSchema } from '../../shema/signinShema';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -12,33 +14,49 @@ export default function Login() {
 
   const from = location.state?.from?.pathname || '/';
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const username = formData.get('username') as string;
-    const password = formData.get('password') as string;
+  const initialValues = {
+    username: '',
+    password: ''
+  };
 
-    auth.signin(username, password, () => {
-      navigate(from, { replace: true });
-      navigate(0);
-    });
-  }
+  const formik = useFormik({
+    initialValues,
+    onSubmit: values => {
+      auth.signin(values.username, values.password, () => {
+        navigate(from);
+        navigate(0);
+      });
+    },
+    validationSchema: SignipSchema
+  });
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleClose = () => {
     setOpen(false);
   };
 
   return (
-    <div>
+    <>
       <Box sx={{ width: 300, mx: 'auto' }}>
         <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
           <Stack spacing={2}>
-            <TextField required id="username" label="Username" name="username" />
-            <TextField required id="password" label="Password" type="password" name="password" />
+            <TextField
+              required
+              id="username"
+              label="Username"
+              {...formik.getFieldProps('username')}
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username && formik.errors.username}
+            />
+            <TextField
+              required
+              id="password"
+              label="Password"
+              type="password"
+              {...formik.getFieldProps('password')}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+            />
             <Button variant="contained" type="submit">
               Login
             </Button>
@@ -50,6 +68,6 @@ export default function Login() {
           {auth?.error?.data?.errorsMessages}
         </Alert>
       </Snackbar>
-    </div>
+    </>
   );
 }

@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   async refreshAccessToken(req) {
-    const id = req.user.userId;
+    const id = req.user.id;
     const refreshToken = req.cookies.Authorization.refreshToken;
     const user = await this.usersRepo.findById(id);
 

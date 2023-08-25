@@ -7,11 +7,11 @@ import { AuthProvider } from './services/auth';
 
 function App() {
   return (
-    <div className='App'>
+    <div className="App">
       <AuthProvider>
         <BrowserRouter>
           <Box sx={{ display: 'flex' }}>
-            <Box component='main' sx={{ flexGrow: 1, px: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, px: 3 }}>
               <AppRoutes />
             </Box>
           </Box>

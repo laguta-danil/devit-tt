@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../services/auth';
 import { useGetPostsQuery } from '../../store/api/posts';
-import PostCard from '../PostCard/PostCard';
+import PostCard from './PostCard/PostCard';
 
 export default function Posts() {
   const navigate = useNavigate();
@@ -56,17 +56,16 @@ export default function Posts() {
             </Button>
           ) : null}
           <Typography>
-            {' '}
-            Sort by date <Switch onClick={handleDateSort} />{' '}
+            Sort by date <Switch onClick={handleDateSort} />
           </Typography>
         </Stack>
       </Stack>
 
       <Grid container spacing={2} border={1} borderColor={'#DCDCDC'}>
-        {data?.data.map((post: any) => {
+        {data?.data.map(post => {
           return (
-            <Grid item xs={8} sm={6} lg={4}>
-              <PostCard post={post} key={post.id} />
+            <Grid item xs={8} sm={6} lg={4} key={post.id}>
+              <PostCard post={post} />
             </Grid>
           );
         })}

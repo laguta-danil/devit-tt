@@ -7,7 +7,7 @@ export class LoginDto {
   @ApiProperty({
     description:
       'Unique login of the user (3-10 characters). Allowed characters: letters, numbers, underscores, and hyphens',
-    example: 'user',
+    example: 'admin',
     maxLength: 30,
     minLength: 3,
     pattern: '[a-zA-Z0-9_-]*$',
@@ -19,7 +19,7 @@ export class LoginDto {
 
   @ApiProperty({
     description: 'User password',
-    example: 'qwerty123',
+    example: 'admin',
     minLength: 6
   })
   @Trim()
