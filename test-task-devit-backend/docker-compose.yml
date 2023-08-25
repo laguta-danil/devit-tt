@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=123123
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=devit
+    container_name: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5002:5432'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-docker-postgres
+    environment:
+      - PORT=${PORT}
+    ports:
+      - '5001:5000'
+    depends_on:
+      - db
+    volumes:
+      - ./src:/app/src
+

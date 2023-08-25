@@ -11,7 +11,7 @@ const parser = new Parser();
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  @Cron('* */10 * * * *')
+  @Cron('* */3 * * * *')
   async getRssFeed() {
     const feed = await parser.parseURL(process.env.FEED_URL);
 
